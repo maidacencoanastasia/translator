@@ -41,7 +41,16 @@ public class WordTranslatorRepository {
         String fileName = "src/main/resources/translations/" +  language + "/"  + word + ".json";
         try {
             File file = new File(fileName);
-            file.delete();
+
+            boolean flag = file.createNewFile();
+            if (flag) {
+                System.out.println("File has been created successfully at the specified location");
+            }
+            else {
+                System.out.println("File already present at the specified location");
+            }
+
+            file.delete();//  метод работает не корректно, но удаление выполняет
             return true;
         } catch (Exception e) {
             return false;
