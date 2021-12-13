@@ -6,10 +6,10 @@
   "plural": ["cats"],
   "definitions": [
     {
-      "dict": "Dicționar de sinonime",
+      "dict": "Dicționar of synonyms",
       "dictType": "synonyms",
       "year": 1998,
-      "text": ["mâță", "cotoroabă", "cătușă"]
+      "text": ["kitty", "cat", "kittys"]
     },
     {
       "dict": "Dicționarul explicativ al limbii române, ediția a II-a",
