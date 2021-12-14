@@ -117,16 +117,21 @@ public class WordTranslatorRepository {
     }
 
     public String translateSentence(String sentence, String fromLanguage, String toLanguage) {
-        String fileName_from = "src/main/resources/translations/" + fromLanguage + "/cat.json";
-        String fileName_to = "src/main/resources/translations/" + toLanguage + "/pisica.json";
-
-        try {
-            Reader reader = Files.newBufferedReader(Paths.get(fileName_to));
-            Word wordModel = gson.fromJson(reader, Word.class);
-            reader.close();
-            return wordModel.toString();
-        } catch (Exception e) {
-            return "word not found";
+//        String fileName_from = "src/main/resources/translations/" + fromLanguage + "/cat.json";
+//        String fileName_to = "src/main/resources/translations/" + toLanguage + "/pisica.json";
+        String[] words = sentence.split("\\s+");
+        for (int i = 0; i < words.length; i++) {
+            words[i]=words[i].toLowerCase();
+            String fileName_temp = "src/main/resources/translations/" + fromLanguage + "/" + words[i] + ".json";
+            try {
+                Reader reader = Files.newBufferedReader(Paths.get(fileName_temp));
+                Word wordModel = gson.fromJson(reader, Word.class);
+                reader.close();
+                return wordModel.toString();
+            } catch (Exception e) {
+                return "word not found";
+            }
         }
+        return "Something was happen";
     }
 }

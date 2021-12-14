@@ -39,8 +39,7 @@ public class WordTranslatorController {
     public boolean removeDefinition(@PathVariable String word, @PathVariable String language, @PathVariable String dictionary, @RequestBody Defenition definition) {
         return wordTranslatorRepository.removeDefinition(word, language, definition);
     }
-    @SneakyThrows
-    @DeleteMapping(path = "translate/word/{language}/{word}/{dictionary}")
+    @DeleteMapping(path = "translate/words/{language}/{word}/{dictionary}")
     public boolean RemoveDef(@PathVariable String word, @PathVariable String language, @PathVariable String dictionary, @RequestBody Defenition definition) {
         return wordTranslatorRepository.RemoveDef(word, language, definition);
     }
