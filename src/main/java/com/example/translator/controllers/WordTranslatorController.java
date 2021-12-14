@@ -31,9 +31,14 @@ public class WordTranslatorController {
         return wordTranslatorRepository.addDefinitionForWord(word, language, definition);
     }
 
-    @DeleteMapping(path = "translate/word/{language}/{word}/definitions")
-    //"dictType": "definitions"
-    public boolean  removeDefinition(@PathVariable String word, @PathVariable String language,@RequestBody String dictionary) {
-        return wordTranslatorRepository.removeDefinition(word, language,dictionary);
+    //"dictType" = dictionary: "definitions"
+    @DeleteMapping(path = "translate/word/{language}/{word}/{dictionary}")
+    public boolean removeDefinition(@PathVariable String word, @PathVariable String language, @PathVariable String dictionary, @RequestBody Defenition definition) {
+        return wordTranslatorRepository.removeDefinition(word, language, definition);
+    }
+
+    @GetMapping(path = "translate/sentences/{fromLanguage}/{toLanguage}/{sentence}")
+    String translateSentence(@PathVariable String sentence, @PathVariable String fromLanguage, @PathVariable String toLanguage) {
+        return wordTranslatorRepository.translateSentence(fromLanguage, toLanguage, sentence);
     }
 }

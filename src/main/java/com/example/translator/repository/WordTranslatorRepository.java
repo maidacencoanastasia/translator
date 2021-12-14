@@ -3,6 +3,7 @@ package com.example.translator.repository;
 import com.example.translator.model.Defenition;
 import com.example.translator.model.Word;
 import com.google.gson.Gson;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.awt.*;
 import java.io.File;
@@ -80,13 +81,13 @@ public class WordTranslatorRepository {
 
     }
 
-    public boolean removeDefinition(String word, String language, String dictionary) {
+    public boolean removeDefinition(String word, String language,Defenition definition) {
         String fileName = "src/main/resources/translations/" + language + "/" + word + ".json";
         try {
             Reader reader = Files.newBufferedReader(Paths.get(fileName));
             Word wordModel = gson.fromJson(reader, Word.class);
             reader.close();
-            wordModel.definitions.remove(dictionary);
+            wordModel.definitions.remove(definition);
             try {
                 Writer writer = new FileWriter(fileName);
                 gson.toJson(wordModel, writer);
@@ -97,6 +98,21 @@ public class WordTranslatorRepository {
             return true;
         } catch (Exception e) {
             return false;
+        }
+    }
+
+
+    public String translateSentence(String sentence, String fromLanguage,String toLanguage) {
+        String fileName_from = "src/main/resources/translations/" + fromLanguage + "/cat.json";
+        String fileName_to = "src/main/resources/translations/" + toLanguage + "/pisica.json";
+
+        try {
+            Reader reader = Files.newBufferedReader(Paths.get(fileName_to));
+            Word wordModel = gson.fromJson(reader, Word.class);
+            reader.close();
+            return wordModel.toString();
+        } catch (Exception e) {
+            return "word not found";
         }
     }
 }
