@@ -41,7 +41,7 @@ public class WordTranslatorController {
     }
     @SneakyThrows
     @DeleteMapping(path = "translate/word/{language}/{word}/{dictionary}")
-    public boolean RemoveDef(@PathVariable String word, @PathVariable String language, @PathVariable String dictionary, @RequestBody Defenition definition) throws IOException {
+    public boolean RemoveDef(@PathVariable String word, @PathVariable String language, @PathVariable String dictionary, @RequestBody Defenition definition) {
         return wordTranslatorRepository.RemoveDef(word, language, definition);
     }
 

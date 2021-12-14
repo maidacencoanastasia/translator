@@ -81,7 +81,7 @@ public class WordTranslatorRepository {
 
     }
 
-    public boolean removeDefinition(String word, String language,Defenition definition) {
+    public boolean removeDefinition(String word, String language, Defenition definition) {
         String fileName = "src/main/resources/translations/" + language + "/" + word + ".json";
         try {
             Reader reader = Files.newBufferedReader(Paths.get(fileName));
@@ -100,18 +100,23 @@ public class WordTranslatorRepository {
             return false;
         }
     }
-    public boolean RemoveDef(String word, String language,Defenition definition) throws IOException {
+
+    public boolean RemoveDef(String word, String language, Defenition definition) {
         String fileName = "src/main/resources/translations/" + language + "/" + word + ".json";
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode jsonNode = objectMapper.readTree(new File(fileName));
-        for (JsonNode node : jsonNode) {
-            ((ObjectNode) node).remove("dictType");
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode jsonNode = objectMapper.readTree(new File(fileName));
+            for (JsonNode node : jsonNode) {
+                ((ObjectNode) node).remove("dictType");
+            }
+            objectMapper.writeValue(new File(fileName), jsonNode);
+            return true;
+        } catch (Exception e) {
+            return false;
         }
-        objectMapper.writeValue(new File(fileName), jsonNode);
-        return true;
     }
 
-    public String translateSentence(String sentence, String fromLanguage,String toLanguage) {
+    public String translateSentence(String sentence, String fromLanguage, String toLanguage) {
         String fileName_from = "src/main/resources/translations/" + fromLanguage + "/cat.json";
         String fileName_to = "src/main/resources/translations/" + toLanguage + "/pisica.json";
 
