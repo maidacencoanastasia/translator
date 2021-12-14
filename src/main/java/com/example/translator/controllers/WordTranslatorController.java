@@ -3,7 +3,10 @@ package com.example.translator.controllers;
 import com.example.translator.model.Defenition;
 import com.example.translator.model.Word;
 import com.example.translator.repository.WordTranslatorRepository;
+import lombok.SneakyThrows;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 
 @RestController
@@ -35,6 +38,11 @@ public class WordTranslatorController {
     @DeleteMapping(path = "translate/word/{language}/{word}/{dictionary}")
     public boolean removeDefinition(@PathVariable String word, @PathVariable String language, @PathVariable String dictionary, @RequestBody Defenition definition) {
         return wordTranslatorRepository.removeDefinition(word, language, definition);
+    }
+    @SneakyThrows
+    @DeleteMapping(path = "translate/word/{language}/{word}/{dictionary}")
+    public boolean RemoveDef(@PathVariable String word, @PathVariable String language, @PathVariable String dictionary, @RequestBody Defenition definition) throws IOException {
+        return wordTranslatorRepository.RemoveDef(word, language, definition);
     }
 
     @GetMapping(path = "translate/sentences/{fromLanguage}/{toLanguage}/{sentence}")

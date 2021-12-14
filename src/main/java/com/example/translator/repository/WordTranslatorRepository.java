@@ -2,14 +2,14 @@ package com.example.translator.repository;
 
 import com.example.translator.model.Defenition;
 import com.example.translator.model.Word;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.Gson;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -100,7 +100,16 @@ public class WordTranslatorRepository {
             return false;
         }
     }
-
+    public boolean RemoveDef(String word, String language,Defenition definition) throws IOException {
+        String fileName = "src/main/resources/translations/" + language + "/" + word + ".json";
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(new File(fileName));
+        for (JsonNode node : jsonNode) {
+            ((ObjectNode) node).remove("dictType");
+        }
+        objectMapper.writeValue(new File(fileName), jsonNode);
+        return true;
+    }
 
     public String translateSentence(String sentence, String fromLanguage,String toLanguage) {
         String fileName_from = "src/main/resources/translations/" + fromLanguage + "/cat.json";
