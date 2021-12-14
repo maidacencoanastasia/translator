@@ -6,12 +6,15 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.Gson;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.awt.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class WordTranslatorRepository {
     private Gson gson = new Gson();
@@ -119,10 +122,11 @@ public class WordTranslatorRepository {
     public String translateSentence(String sentence, String fromLanguage, String toLanguage) {
 //        String fileName_from = "src/main/resources/translations/" + fromLanguage + "/cat.json";
 //        String fileName_to = "src/main/resources/translations/" + toLanguage + "/pisica.json";
-        String[] words = sentence.split("\\s+");
-        for (int i = 0; i < words.length; i++) {
-            words[i]=words[i].toLowerCase();
-            String fileName_temp = "src/main/resources/translations/" + fromLanguage + "/" + words[i] + ".json";
+        sentence = sentence.toLowerCase();
+        String[] words = sentence.split("(?<=[a-z])\\\\.\\\\s+");
+        for (String el : words) {
+            System.out.println("word - " + el);
+            String fileName_temp = "src/main/resources/translations/" + fromLanguage + "/" + el + ".json";
             try {
                 Reader reader = Files.newBufferedReader(Paths.get(fileName_temp));
                 Word wordModel = gson.fromJson(reader, Word.class);
@@ -133,5 +137,39 @@ public class WordTranslatorRepository {
             }
         }
         return "Something was happen";
+    }
+
+    public ArrayList<Defenition> getDefinitionsForWord(String word, String language) {
+        String fileName = "src/main/resources/translations/" + language + "/" + word + ".json";
+        ArrayList<Defenition> defenitionArrayList = null;
+        int an = 0;
+        int[] dates = new int[10];
+        int[] dates_sorted = new int[10];
+        try {
+            Reader reader = Files.newBufferedReader(Paths.get(fileName));
+            Word wordModel = gson.fromJson(reader, Word.class);
+            reader.close();
+            defenitionArrayList = wordModel.getDefinitions();
+            try {
+                if (defenitionArrayList != null) {
+                    for (Defenition el : defenitionArrayList) {
+                        dates[an] = el.getYear();
+                        an++;
+                        Arrays.stream(dates).sorted();
+                    }
+                    Writer writer = new FileWriter(fileName);
+                    gson.toJson(wordModel, writer);
+                    writer.close();
+                }
+            } catch (Exception e) {
+                return defenitionArrayList;
+
+            }
+            return defenitionArrayList;
+
+        } catch (Exception e) {
+            return defenitionArrayList;
+        }
+
     }
 }

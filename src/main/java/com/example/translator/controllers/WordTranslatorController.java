@@ -7,6 +7,7 @@ import lombok.SneakyThrows;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 @RestController
@@ -47,5 +48,9 @@ public class WordTranslatorController {
     @GetMapping(path = "translate/sentences/{fromLanguage}/{toLanguage}/{sentence}")
     String translateSentence(@PathVariable String sentence, @PathVariable String fromLanguage, @PathVariable String toLanguage) {
         return wordTranslatorRepository.translateSentence(fromLanguage, toLanguage, sentence);
+    }
+    @PostMapping(path = "defenition/word/{language}/{word}")
+    ArrayList<Defenition> getDefinitionsForWord(@PathVariable String word,@PathVariable String language){
+        return wordTranslatorRepository.getDefinitionsForWord( word, language);
     }
 }
