@@ -84,13 +84,16 @@ public class WordTranslatorRepository {
 
     }
 
-    public boolean removeDefinition(String word, String language, Defenition definition) {
+    public boolean removeDefinition(String word, String language, String dictionary) {
         String fileName = "src/main/resources/translations/" + language + "/" + word + ".json";
+        ArrayList<Defenition> defenition;
         try {
             Reader reader = Files.newBufferedReader(Paths.get(fileName));
             Word wordModel = gson.fromJson(reader, Word.class);
             reader.close();
-            wordModel.definitions.remove(definition);
+            defenition = wordModel.getDefinitions();
+            if (defenition.contains(dictionary))
+            wordModel.definitions.remove(dictionary);
             try {
                 Writer writer = new FileWriter(fileName);
                 gson.toJson(wordModel, writer);
@@ -104,13 +107,13 @@ public class WordTranslatorRepository {
         }
     }
 
-    public boolean RemoveDef(String word, String language, Defenition definition) {
+    public boolean RemoveDef(String word, String language, String dictionary) {
         String fileName = "src/main/resources/translations/" + language + "/" + word + ".json";
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonNode = objectMapper.readTree(new File(fileName));
             for (JsonNode node : jsonNode) {
-                ((ObjectNode) node).remove("dictType");
+                ((ObjectNode) node).remove(dictionary);//dictionary "dictType"
             }
             objectMapper.writeValue(new File(fileName), jsonNode);
             return true;

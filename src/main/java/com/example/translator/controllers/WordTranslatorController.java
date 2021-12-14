@@ -36,21 +36,24 @@ public class WordTranslatorController {
     }
 
     //"dictType" = dictionary: "definitions"
-    @DeleteMapping(path = "translate/word/{language}/{word}/{dictionary}")
-    public boolean removeDefinition(@PathVariable String word, @PathVariable String language, @PathVariable String dictionary, @RequestBody Defenition definition) {
-        return wordTranslatorRepository.removeDefinition(word, language, definition);
+    //"dict": "Dicționar de sinonime", Numele dicționarului
+    @DeleteMapping(path = "translate/word/{language}/{word}/{dict}")
+    public boolean removeDefinition(@PathVariable String word, @PathVariable String language, @PathVariable("Dicționar_of_synonyms") String dictionary) {
+        return wordTranslatorRepository.removeDefinition(word, language, dictionary);
     }
+
     @DeleteMapping(path = "translate/words/{language}/{word}/{dictionary}")
-    public boolean RemoveDef(@PathVariable String word, @PathVariable String language, @PathVariable String dictionary, @RequestBody Defenition definition) {
-        return wordTranslatorRepository.RemoveDef(word, language, definition);
+    public boolean RemoveDef(@PathVariable String word, @PathVariable String language, @PathVariable String dictionary) {
+        return wordTranslatorRepository.RemoveDef(word, language, dictionary);
     }
 
     @GetMapping(path = "translate/sentences/{fromLanguage}/{toLanguage}/{sentence}")
     String translateSentence(@PathVariable String sentence, @PathVariable String fromLanguage, @PathVariable String toLanguage) {
         return wordTranslatorRepository.translateSentence(fromLanguage, toLanguage, sentence);
     }
+
     @PostMapping(path = "defenition/word/{language}/{word}")
-    ArrayList<Defenition> getDefinitionsForWord(@PathVariable String word,@PathVariable String language){
-        return wordTranslatorRepository.getDefinitionsForWord( word, language);
+    ArrayList<Defenition> getDefinitionsForWord(@PathVariable String word, @PathVariable String language) {
+        return wordTranslatorRepository.getDefinitionsForWord(word, language);
     }
 }
